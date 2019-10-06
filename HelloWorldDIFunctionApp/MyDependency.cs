@@ -10,7 +10,7 @@ namespace HelloWorldDIFunctionApp
     {
         private string TestString;
 
-        public MyDependency(int i)
+        public MyDependency()
         {
             TestString = "Dependency injection worked";
         }

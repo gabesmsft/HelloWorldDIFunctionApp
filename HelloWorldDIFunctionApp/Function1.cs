@@ -1,17 +1,14 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace HelloWorldDIFunctionApp
 {
 	// This class will serve as the Dependency Injection client for this demo.
-    public sealed class Function1
+    public class Function1
     {
         private readonly IMyDependency _myDependency;
 
@@ -22,21 +19,19 @@ namespace HelloWorldDIFunctionApp
         }
 
         [FunctionName("Function1")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            // We're going to call the MyDependency instance's TestDependency method.
+            // Logging the return value of this method will verify whether dependency injection worked.
+            // If MyDependency is successfully injected into the client code without the client code having to explicitly instantiate MyDependency,
+            // then TestString will be initialized and will equal "mydependency is injected",
+            // and thus the log statement below will print "mydependency is injected"
 
-            string name = req.Query["name"];
+            log.LogInformation(_myDependency.TestDependencyInjection());
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            return (ActionResult)new OkObjectResult("Well, it didn't return an HTTP error at least");
         }
     }
 }
