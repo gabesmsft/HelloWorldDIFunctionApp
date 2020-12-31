@@ -31,7 +31,7 @@ namespace HelloWorldDIFunctionApp
 
             log.LogInformation(_myDependency.TestDependencyInjection());
 
-            return (ActionResult)new OkObjectResult("Well, it didn't return an HTTP error at least");
+            return (ActionResult)new OkObjectResult("ok");
         }
     }
 }

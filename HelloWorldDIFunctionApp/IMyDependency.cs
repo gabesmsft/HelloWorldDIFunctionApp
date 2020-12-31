@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace HelloWorldDIFunctionApp
+﻿namespace HelloWorldDIFunctionApp
 {
     public interface IMyDependency
     {
