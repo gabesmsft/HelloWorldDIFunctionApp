@@ -13,7 +13,7 @@ namespace HelloWorldDIFunctionApp
         public override void Configure(IFunctionsHostBuilder builder)
         {
             //Registering MyDependency as a service so that it can be dependency-injected into a client
-            builder.Services.AddScoped<IMyDependency, MyDependency>();
+            builder.Services.AddTransient<IMyDependency, MyDependency>();
         }
     }
 }
